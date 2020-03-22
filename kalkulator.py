@@ -2,11 +2,29 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLabel, QGridLayout
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QHBoxLayout
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import Qt
+
 
 class Kalkulator(QWidget):
     def __init__(self, parent=None):
          super().__init__(parent)
          self.interfejs()
+
+    def koniec(self):
+        self.close()
+
+    def closeEvent(self, event):
+        odp = QMessageBox.question(
+            self, "komunikat", "czy na pewno koniec?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No
+        )
+        if odp == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+    def keyPressEvent(self, event):
+        if e.key() == Qt.Key_Escape:
+            self.close()
 
     def interfejs(self):
         #etykiety
@@ -49,6 +67,8 @@ class Kalkulator(QWidget):
 
         # przypisanie ukladu tabelarycznego do okna
         self.setLayout(ukladT)
+
+        koniecBtn.clicked.connect(self.koniec)
 
         self.setGeometry(120, 120, 300, 100)
         self.setWindowIcon(QIcon('kalkulator.png'))
