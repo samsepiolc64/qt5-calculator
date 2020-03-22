@@ -1,11 +1,28 @@
 from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QLabel, QGridLayout
+
 class Kalkulator(QWidget):
     def __init__(self, parent=None):
          super().__init__(parent)
          self.interfejs()
 
     def interfejs(self):
-        self.resize(300,100)
+        etykieta1 = QLabel("liczba 1:", self)
+        etykieta2 = QLabel("liczba 2:", self)
+        etykieta3 = QLabel("wynik:", self)
+
+        # przypisanie widgetow do ukladu tabelarycznego
+        ukladT = QGridLayout()
+        ukladT.addWidget(etykieta1, 0, 0)
+        ukladT.addWidget(etykieta2, 0, 1)
+        ukladT.addWidget(etykieta3, 0, 2)
+
+        # przypisanie ukladu tabelarycznego do okna
+        self.setLayout(ukladT)
+
+        self.setGeometry(120, 120, 300, 100)
+        self.setWindowIcon(QIcon('kalkulator.png'))
         self.setWindowTitle("Prosty kalkulator")
         self.show()
 
