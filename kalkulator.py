@@ -26,6 +26,34 @@ class Kalkulator(QWidget):
         if e.key() == Qt.Key_Escape:
             self.close()
 
+    def dzialanie(self):
+        nadawca = self.sender()
+
+        try:
+            liczba1 = float(self.liczba1Edt.text())
+            liczba2 = float(self.liczba2Edt.text())
+            wynik = ""
+
+            if nadawca.text() == "&Dodaj":
+                wynik = liczba1 + liczba2
+            elif nadawca.text() == "&Odejmij":
+                wynik = liczba1 - liczba2
+            elif nadawca.text() == "&Mnóż":
+                wynik = liczba1 * liczba2
+            else:
+                try:
+                    wynik = round(liczba1/liczba2,9)
+                except ZeroDivisionError:
+                    QMessageBox.critical(
+                        self, "błąd", "nie można dzielić przez zero!"
+                    )
+                    return
+
+            self.wynikEdt.setText(str(wynik))
+
+        except ValueError:
+            QMessageBox.warning(self, "błąd", "błędne dane", QMessageBox.Ok)
+
     def interfejs(self):
         #etykiety
         etykieta1 = QLabel("liczba 1:", self)
@@ -68,7 +96,12 @@ class Kalkulator(QWidget):
         # przypisanie ukladu tabelarycznego do okna
         self.setLayout(ukladT)
 
+        # klik
         koniecBtn.clicked.connect(self.koniec)
+        dodajBtn.clicked.connect(self.dzialanie)
+        odejmijBtn.clicked.connect(self.dzialanie)
+        mnozBtn.clicked.connect(self.dzialanie)
+        dzielBtn.clicked.connect(self.dzialanie)
 
         self.setGeometry(120, 120, 300, 100)
         self.setWindowIcon(QIcon('kalkulator.png'))
